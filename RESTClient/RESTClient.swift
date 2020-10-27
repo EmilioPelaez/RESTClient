@@ -22,11 +22,28 @@ class RESTClient {
 		self.decoder = decoder
 	}
 	
-	func find<T: RemoteResource>(pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
+	func all<T: RemoteResource>(pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		return session.dataTaskPublisher(for: url)
 			.map(\.data)
 			.decode(type: [T].self, decoder: decoder)
+			.eraseToAnyPublisher()
+	}
+	
+	func first<T: RemoteResource>(pathPrefix: String? = nil) -> AnyPublisher<T?, Error> {
+		let url = buildUrl(for: T.self, prefix: pathPrefix)
+		return session.dataTaskPublisher(for: url)
+			.map(\.data)
+			.decode(type: [T].self, decoder: decoder)
+			.map(\.first)
+			.eraseToAnyPublisher()
+	}
+	
+	func find<T: UniqueRemoteResource>(identifier: T.ID, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
+		let url = buildUrl(for: T.self, prefix: pathPrefix).appendingPathComponent(String(describing: identifier))
+		return session.dataTaskPublisher(for: url)
+			.map(\.data)
+			.decode(type: T.self, decoder: decoder)
 			.eraseToAnyPublisher()
 	}
 	

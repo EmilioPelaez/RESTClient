@@ -12,6 +12,7 @@
 		C8F57FDC25485F77004BF8DF /* RESTClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C8F57FCE25485F77004BF8DF /* RESTClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C8F57FEA25485FF0004BF8DF /* RESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FE925485FF0004BF8DF /* RESTClient.swift */; };
 		C8F57FEE254862D2004BF8DF /* RemoteResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FED254862D2004BF8DF /* RemoteResource.swift */; };
+		C8F57FF2254865ED004BF8DF /* UniqueRemoteResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FF1254865ED004BF8DF /* UniqueRemoteResource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +34,7 @@
 		C8F57FDB25485F77004BF8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C8F57FE925485FF0004BF8DF /* RESTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTClient.swift; sourceTree = "<group>"; };
 		C8F57FED254862D2004BF8DF /* RemoteResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteResource.swift; sourceTree = "<group>"; };
+		C8F57FF1254865ED004BF8DF /* UniqueRemoteResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniqueRemoteResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +81,7 @@
 				C8F57FCF25485F77004BF8DF /* Info.plist */,
 				C8F57FE925485FF0004BF8DF /* RESTClient.swift */,
 				C8F57FED254862D2004BF8DF /* RemoteResource.swift */,
+				C8F57FF1254865ED004BF8DF /* UniqueRemoteResource.swift */,
 			);
 			path = RESTClient;
 			sourceTree = "<group>";
@@ -201,6 +204,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8F57FF2254865ED004BF8DF /* UniqueRemoteResource.swift in Sources */,
 				C8F57FEA25485FF0004BF8DF /* RESTClient.swift in Sources */,
 				C8F57FEE254862D2004BF8DF /* RemoteResource.swift in Sources */,
 			);
