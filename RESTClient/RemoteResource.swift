@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol RemoteResource: Decodable {
+protocol RemoteResource: Codable {
 	static var path: String { get }
 }
 
