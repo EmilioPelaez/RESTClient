@@ -10,6 +10,8 @@
 		C8F57FD525485F77004BF8DF /* RESTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8F57FCB25485F77004BF8DF /* RESTClient.framework */; };
 		C8F57FDA25485F77004BF8DF /* RESTClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FD925485F77004BF8DF /* RESTClientTests.swift */; };
 		C8F57FDC25485F77004BF8DF /* RESTClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C8F57FCE25485F77004BF8DF /* RESTClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C8F57FEA25485FF0004BF8DF /* RESTClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FE925485FF0004BF8DF /* RESTClient.swift */; };
+		C8F57FEE254862D2004BF8DF /* RemoteResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FED254862D2004BF8DF /* RemoteResource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		C8F57FD425485F77004BF8DF /* RESTClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RESTClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8F57FD925485F77004BF8DF /* RESTClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTClientTests.swift; sourceTree = "<group>"; };
 		C8F57FDB25485F77004BF8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C8F57FE925485FF0004BF8DF /* RESTClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RESTClient.swift; sourceTree = "<group>"; };
+		C8F57FED254862D2004BF8DF /* RemoteResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteResource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +77,8 @@
 			children = (
 				C8F57FCE25485F77004BF8DF /* RESTClient.h */,
 				C8F57FCF25485F77004BF8DF /* Info.plist */,
+				C8F57FE925485FF0004BF8DF /* RESTClient.swift */,
+				C8F57FED254862D2004BF8DF /* RemoteResource.swift */,
 			);
 			path = RESTClient;
 			sourceTree = "<group>";
@@ -147,6 +153,7 @@
 				TargetAttributes = {
 					C8F57FCA25485F77004BF8DF = {
 						CreatedOnToolsVersion = 12.1;
+						LastSwiftMigration = 1210;
 					};
 					C8F57FD325485F77004BF8DF = {
 						CreatedOnToolsVersion = 12.1;
@@ -194,6 +201,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C8F57FEA25485FF0004BF8DF /* RESTClient.swift in Sources */,
+				C8F57FEE254862D2004BF8DF /* RemoteResource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,6 +350,7 @@
 		C8F57FE025485F77004BF8DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = FS696NSBK7;
@@ -357,6 +367,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.emiliopelaez.RESTClient;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -365,6 +376,7 @@
 		C8F57FE125485F77004BF8DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = FS696NSBK7;
@@ -389,6 +401,7 @@
 		C8F57FE325485F77004BF8DF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FS696NSBK7;
 				INFOPLIST_FILE = RESTClientTests/Info.plist;
@@ -407,6 +420,7 @@
 		C8F57FE425485F77004BF8DF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FS696NSBK7;
 				INFOPLIST_FILE = RESTClientTests/Info.plist;
