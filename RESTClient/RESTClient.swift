@@ -8,7 +8,9 @@
 import Foundation
 import Combine
 
-class RESTClient {
+class RESTClient: TopLevelDecoder {
+	
+	typealias Input = Data
 	
 	let baseUrl: URL
 	let session: URLSession
@@ -26,7 +28,7 @@ class RESTClient {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		return session.dataTaskPublisher(for: url)
 			.map(\.data)
-			.decode(type: [T].self, decoder: decoder)
+			.decode(type: [T].self, decoder: self)
 			.eraseToAnyPublisher()
 	}
 	
@@ -34,7 +36,7 @@ class RESTClient {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		return session.dataTaskPublisher(for: url)
 			.map(\.data)
-			.decode(type: [T].self, decoder: decoder)
+			.decode(type: [T].self, decoder: self)
 			.map(\.first)
 			.eraseToAnyPublisher()
 	}
@@ -43,7 +45,7 @@ class RESTClient {
 		let url = buildUrl(for: T.self, prefix: pathPrefix).appendingPathComponent(String(describing: identifier))
 		return session.dataTaskPublisher(for: url)
 			.map(\.data)
-			.decode(type: T.self, decoder: decoder)
+			.decode(type: T.self, decoder: self)
 			.eraseToAnyPublisher()
 	}
 	
@@ -55,7 +57,7 @@ class RESTClient {
 			request.httpBody = try encoder.encode(body)
 			return session.dataTaskPublisher(for: request)
 				.map(\.data)
-				.decode(type: U.self, decoder: decoder)
+				.decode(type: U.self, decoder: self)
 				.eraseToAnyPublisher()
 		} catch {
 			return Fail(outputType: U.self, failure: error).eraseToAnyPublisher()
@@ -70,7 +72,7 @@ class RESTClient {
 			request.httpBody = try encoder.encode(resource)
 			return session.dataTaskPublisher(for: request)
 				.map(\.data)
-				.decode(type: T.self, decoder: decoder)
+				.decode(type: T.self, decoder: self)
 				.eraseToAnyPublisher()
 		} catch {
 			return Fail(outputType: T.self, failure: error).eraseToAnyPublisher()
@@ -104,6 +106,10 @@ class RESTClient {
 		} else {
 			return baseUrl.appendingPathComponent(T.path)
 		}
+	}
+	
+	func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
+		try decoder.decode(type, from: data)
 	}
 	
 }
