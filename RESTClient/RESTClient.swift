@@ -52,7 +52,7 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func create<T: Encodable, U: RemoteResource>(_ body: T, pathPrefix: String? = nil) -> AnyPublisher<U, Error> {
+	func create<T: Encodable, U: RemoteResource>(_ body: T, receive: U.Type, pathPrefix: String? = nil) -> AnyPublisher<U, Error> {
 		let url = buildUrl(for: U.self, prefix: pathPrefix)
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"

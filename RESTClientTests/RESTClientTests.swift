@@ -16,7 +16,7 @@ class RESTClientTests: XCTestCase {
 	func testAll() {
 		let expectation = XCTestExpectation(description: "All")
 		
-		let test = client.all(Object.self).sink {
+		_ = client.all(Object.self).sink {
 			switch $0 {
 			case .failure(let error):
 				XCTFail("Fetch fail \(error.localizedDescription)")
@@ -25,8 +25,71 @@ class RESTClientTests: XCTestCase {
 		} receiveValue: { objects in
 			XCTAssertEqual(objects, self.values.map { Object(id: $0, value: "Hello") })
 			expectation.fulfill()
-			self.wait(for: [expectation], timeout: 10.0)
 		}
+		wait(for: [expectation], timeout: 10.0)
+	}
+	
+	func testFirst() {
+		let expectation = XCTestExpectation(description: "First")
+		
+		_ = client.first(Object.self).sink {
+			switch $0 {
+			case .failure(let error):
+				XCTFail("Fetch fail \(error.localizedDescription)")
+			case _: break
+			}
+		} receiveValue: { object in
+			XCTAssertEqual(object, Object(id: 1, value: "Hello"))
+			expectation.fulfill()
+		}
+		wait(for: [expectation], timeout: 10.0)
+	}
+	
+	func testFind() {
+		let expectation = XCTestExpectation(description: "Find")
+		
+		_ = client.find(Object.self, identifier: 1).sink {
+			switch $0 {
+			case .failure(let error):
+				XCTFail("Fetch fail \(error.localizedDescription)")
+			case _: break
+			}
+		} receiveValue: { object in
+			XCTAssertEqual(object, Object(id: 1, value: "Hello"))
+			expectation.fulfill()
+		}
+		wait(for: [expectation], timeout: 10.0)
+	}
+	
+	func testCreate() {
+		let expectation = XCTestExpectation(description: "Create")
+		
+		_ = client.create(NewObject(value: "Hello"), receive: Object.self).sink {
+			switch $0 {
+			case .failure(let error):
+				XCTFail("Fetch fail \(error.localizedDescription)")
+			case _: break
+			}
+		} receiveValue: { object in
+			XCTAssertEqual(object, Object(id: 11, value: "Hello"))
+			expectation.fulfill()
+		}
+		wait(for: [expectation], timeout: 10.0)
+	}
+	
+	func testDelete() {
+		let expectation = XCTestExpectation(description: "Delete")
+		
+		_ = client.delete(Object.self, identifier: "1").sink {
+			switch $0 {
+			case .failure(let error):
+				XCTFail("Fetch fail \(error.localizedDescription)")
+			case _: break
+			}
+		} receiveValue: {
+			expectation.fulfill()
+		}
+		wait(for: [expectation], timeout: 10.0)
 	}
 	
 }

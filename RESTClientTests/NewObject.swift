@@ -9,5 +9,7 @@ import Foundation
 @testable import RESTClient
 
 struct NewObject: RemoteResource {
+	static var path: String { "objects" }
+	
 	let value: String
 }
