@@ -10,8 +10,6 @@ import Combine
 
 class RESTClient: TopLevelDecoder {
 	
-	typealias Input = Data
-	
 	let baseUrl: URL
 	let session: URLSession
 	let encoder: JSONEncoder
