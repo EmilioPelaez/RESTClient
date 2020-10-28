@@ -12,5 +12,5 @@ protocol RemoteResource: Codable {
 }
 
 extension RemoteResource {
-	static var path: String { String(describing: self) }
+	static var path: String { String(describing: self).lowercased() + "s" }
 }

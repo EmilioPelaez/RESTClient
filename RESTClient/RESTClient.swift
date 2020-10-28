@@ -24,7 +24,7 @@ class RESTClient: TopLevelDecoder {
 		self.decoder = decoder
 	}
 	
-	func all<T: RemoteResource>(pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
+	func all<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		let request = URLRequest(url: url)
 		return performRequest(request, requestConfiguration: requestConfiguration)
@@ -33,7 +33,7 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func first<T: RemoteResource>(pathPrefix: String? = nil) -> AnyPublisher<T?, Error> {
+	func first<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<T?, Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		let request = URLRequest(url: url)
 		return performRequest(request, requestConfiguration: requestConfiguration)
@@ -43,7 +43,7 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func find<T: UniqueRemoteResource>(identifier: T.ID, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
+	func find<T: UniqueRemoteResource>(_ type: T.Type, identifier: T.ID, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix).appendingPathComponent(String(describing: identifier))
 		let request = URLRequest(url: url)
 		return performRequest(request, requestConfiguration: requestConfiguration)
