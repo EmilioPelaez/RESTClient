@@ -7,10 +7,10 @@
 
 import Foundation
 
-protocol RemoteResource: Codable {
+public protocol RemoteResource: Codable {
 	static var path: String { get }
 }
 
 extension RemoteResource {
-	static var path: String { String(describing: self).lowercased() + "s" }
+	public static var path: String { String(describing: self).lowercased() + "s" }
 }

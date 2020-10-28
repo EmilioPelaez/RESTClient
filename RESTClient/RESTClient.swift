@@ -8,23 +8,23 @@
 import Foundation
 import Combine
 
-class RESTClient: TopLevelDecoder {
+open class RESTClient: TopLevelDecoder {
 	
-	let baseUrl: URL
-	let session: URLSession
-	let encoder: JSONEncoder
-	let decoder: JSONDecoder
+	public let baseUrl: URL
+	public let session: URLSession
+	public let encoder: JSONEncoder
+	public let decoder: JSONDecoder
 	
-	var requestConfiguration: (inout URLRequest) -> Void = { _ in }
+	open var requestConfiguration: (inout URLRequest) -> Void = { _ in }
 	
-	init(baseUrl: URL, session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
+	public init(baseUrl: URL, session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
 		self.baseUrl = baseUrl
 		self.session = session
 		self.encoder = encoder
 		self.decoder = decoder
 	}
 	
-	func all<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
+	open func all<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		let request = URLRequest(url: url)
 		return performRequest(request, requestConfiguration: requestConfiguration)
@@ -33,7 +33,7 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func first<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<T?, Error> {
+	open func first<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<T?, Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
 		let request = URLRequest(url: url)
 		return performRequest(request, requestConfiguration: requestConfiguration)
@@ -43,7 +43,7 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func find<T: UniqueRemoteResource>(_ type: T.Type, identifier: T.ID, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
+	open func find<T: UniqueRemoteResource>(_ type: T.Type, identifier: T.ID, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix).appendingPathComponent(String(describing: identifier))
 		let request = URLRequest(url: url)
 		return performRequest(request, requestConfiguration: requestConfiguration)
@@ -52,7 +52,7 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func create<T: Encodable, U: RemoteResource>(_ body: T, receive: U.Type, pathPrefix: String? = nil) -> AnyPublisher<U, Error> {
+	open func create<T: Encodable, U: RemoteResource>(_ body: T, receive: U.Type, pathPrefix: String? = nil) -> AnyPublisher<U, Error> {
 		let url = buildUrl(for: U.self, prefix: pathPrefix)
 		var request = URLRequest(url: url)
 		request.httpMethod = "POST"
@@ -67,7 +67,7 @@ class RESTClient: TopLevelDecoder {
 		}
 	}
 	
-	func update<T: UniqueRemoteResource>(_ resource: T, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
+	open func update<T: UniqueRemoteResource>(_ resource: T, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
 		let url = buildIdentifierdUrl(for: resource, prefix: pathPrefix)
 		var request = URLRequest(url: url)
 		request.httpMethod = "PUT"
@@ -82,11 +82,11 @@ class RESTClient: TopLevelDecoder {
 		}
 	}
 	
-	func delete<T: UniqueRemoteResource>(_ resource: T, pathPrefix: String? = nil) -> AnyPublisher<Void, Error> {
+	open func delete<T: UniqueRemoteResource>(_ resource: T, pathPrefix: String? = nil) -> AnyPublisher<Void, Error> {
 		delete(type(of: resource), identifier: String(describing: resource.id), pathPrefix: pathPrefix)
 	}
 	
-	func delete<T: RemoteResource>(_ type: T.Type, identifier: String, pathPrefix: String? = nil) -> AnyPublisher<(), Error> {
+	open func delete<T: RemoteResource>(_ type: T.Type, identifier: String, pathPrefix: String? = nil) -> AnyPublisher<(), Error> {
 		let url = buildUrl(for: type, prefix: pathPrefix)
 		var request = URLRequest(url: url)
 		request.httpMethod = "DELETE"
@@ -96,22 +96,22 @@ class RESTClient: TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
-	func performRequest(_ request: URLRequest, requestConfiguration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), URLError> {
+	open func performRequest(_ request: URLRequest, requestConfiguration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), URLError> {
 		var request = request
 		requestConfiguration(&request)
 		return session.dataTaskPublisher(for: request)
 			.eraseToAnyPublisher()
 	}
 	
-	func buildIdentifierdUrl<T: UniqueRemoteResource>(for resource: T, prefix: String?) -> URL {
+	open func buildIdentifierdUrl<T: UniqueRemoteResource>(for resource: T, prefix: String?) -> URL {
 		buildUrl(for: resource, prefix: prefix).appendingPathComponent(String(describing: resource.id))
 	}
 	
-	func buildUrl<T: RemoteResource>(for resource: T, prefix: String?) -> URL {
+	open func buildUrl<T: RemoteResource>(for resource: T, prefix: String?) -> URL {
 		buildUrl(for: type(of: resource), prefix: prefix)
 	}
 	
-	func buildUrl<T: RemoteResource>(for resourceType: T.Type, prefix: String?) -> URL {
+	open func buildUrl<T: RemoteResource>(for resourceType: T.Type, prefix: String?) -> URL {
 		if let prefix = prefix {
 			return baseUrl.appendingPathComponent(prefix).appendingPathComponent(T.path)
 		} else {
@@ -119,7 +119,7 @@ class RESTClient: TopLevelDecoder {
 		}
 	}
 	
-	func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
+	open func decode<T: Decodable>(_ type: T.Type, from data: Data) throws -> T {
 		try decoder.decode(type, from: data)
 	}
 	

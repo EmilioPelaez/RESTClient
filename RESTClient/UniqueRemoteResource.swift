@@ -7,5 +7,4 @@
 
 import Foundation
 
-protocol UniqueRemoteResource: RemoteResource, Identifiable {
-}
+public protocol UniqueRemoteResource: RemoteResource, Identifiable {}
