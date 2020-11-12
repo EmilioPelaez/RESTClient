@@ -8,20 +8,18 @@
 import Foundation
 import Combine
 
-open class RESTClient: TopLevelDecoder {
+open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	public let baseUrl: URL
-	public let session: URLSession
 	public let encoder: JSONEncoder
 	public let decoder: JSONDecoder
 	
-	open var requestConfiguration: (inout URLRequest) -> Void = { _ in }
-	
 	public init(baseUrl: URL, session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
 		self.baseUrl = baseUrl
-		self.session = session
 		self.encoder = encoder
 		self.decoder = decoder
+		
+		super.init(session: session)
 	}
 	
 	open func all<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
@@ -93,13 +91,6 @@ open class RESTClient: TopLevelDecoder {
 		return performRequest(request, requestConfiguration: requestConfiguration)
 			.map { _ in  }
 			.mapError { $0 as Error }
-			.eraseToAnyPublisher()
-	}
-	
-	open func performRequest(_ request: URLRequest, requestConfiguration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), URLError> {
-		var request = request
-		requestConfiguration(&request)
-		return session.dataTaskPublisher(for: request)
 			.eraseToAnyPublisher()
 	}
 	

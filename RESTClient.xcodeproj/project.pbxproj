@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C86AADFF255D3C9C00563857 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86AADFE255D3C9C00563857 /* HTTPClient.swift */; };
 		C8F57FD525485F77004BF8DF /* RESTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8F57FCB25485F77004BF8DF /* RESTClient.framework */; };
 		C8F57FDA25485F77004BF8DF /* RESTClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FD925485F77004BF8DF /* RESTClientTests.swift */; };
 		C8F57FDC25485F77004BF8DF /* RESTClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C8F57FCE25485F77004BF8DF /* RESTClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -28,6 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C86AADFE255D3C9C00563857 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		C8F57FCB25485F77004BF8DF /* RESTClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RESTClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8F57FCE25485F77004BF8DF /* RESTClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RESTClient.h; sourceTree = "<group>"; };
 		C8F57FCF25485F77004BF8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				C8F57FE925485FF0004BF8DF /* RESTClient.swift */,
 				C8F57FED254862D2004BF8DF /* RemoteResource.swift */,
 				C8F57FF1254865ED004BF8DF /* UniqueRemoteResource.swift */,
+				C86AADFE255D3C9C00563857 /* HTTPClient.swift */,
 			);
 			path = RESTClient;
 			sourceTree = "<group>";
@@ -212,6 +215,7 @@
 			files = (
 				C8F57FF2254865ED004BF8DF /* UniqueRemoteResource.swift in Sources */,
 				C8F57FEA25485FF0004BF8DF /* RESTClient.swift in Sources */,
+				C86AADFF255D3C9C00563857 /* HTTPClient.swift in Sources */,
 				C8F57FEE254862D2004BF8DF /* RemoteResource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
