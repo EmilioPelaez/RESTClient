@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C80AAAC3256525D400838C12 /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80AAAC2256525D400838C12 /* HTTPMethod.swift */; };
+		C80AAAC72565334700838C12 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80AAAC62565334700838C12 /* Router.swift */; };
 		C86AADFF255D3C9C00563857 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86AADFE255D3C9C00563857 /* HTTPClient.swift */; };
 		C86AAE03255D3CE500563857 /* HTTPBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86AAE02255D3CE500563857 /* HTTPBody.swift */; };
 		C8F57FD525485F77004BF8DF /* RESTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8F57FCB25485F77004BF8DF /* RESTClient.framework */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		C80AAAC2256525D400838C12 /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		C80AAAC62565334700838C12 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		C86AADFE255D3C9C00563857 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		C86AAE02255D3CE500563857 /* HTTPBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPBody.swift; sourceTree = "<group>"; };
 		C8F57FCB25485F77004BF8DF /* RESTClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RESTClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +97,7 @@
 				C86AADFE255D3C9C00563857 /* HTTPClient.swift */,
 				C86AAE02255D3CE500563857 /* HTTPBody.swift */,
 				C80AAAC2256525D400838C12 /* HTTPMethod.swift */,
+				C80AAAC62565334700838C12 /* Router.swift */,
 			);
 			path = RESTClient;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 				C8F57FF2254865ED004BF8DF /* UniqueRemoteResource.swift in Sources */,
 				C8F57FEA25485FF0004BF8DF /* RESTClient.swift in Sources */,
 				C80AAAC3256525D400838C12 /* HTTPMethod.swift in Sources */,
+				C80AAAC72565334700838C12 /* Router.swift in Sources */,
 				C86AADFF255D3C9C00563857 /* HTTPClient.swift in Sources */,
 				C8F57FEE254862D2004BF8DF /* RemoteResource.swift in Sources */,
 				C86AAE03255D3CE500563857 /* HTTPBody.swift in Sources */,
