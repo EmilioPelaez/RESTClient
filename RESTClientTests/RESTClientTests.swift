@@ -82,7 +82,7 @@ class RESTClientTests: XCTestCase {
 	func testDelete() {
 		let expectation = XCTestExpectation(description: "Delete")
 		
-		client.delete(Object.self, identifier: "1").sink {
+		client.delete(Object.self, identifier: 1).sink {
 			switch $0 {
 			case .failure(let error):
 				XCTFail("Fetch fail \(error.localizedDescription)")
