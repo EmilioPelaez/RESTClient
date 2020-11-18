@@ -51,7 +51,7 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	open func create<T: Encodable, U: Decodable>(_ body: T, receive: U.Type, router: Router? = nil) -> AnyPublisher<U, Error> {
 		let url = (router ?? self.router).url(for: type(of: body), baseURL: baseUrl)
-		return performRequest(for: url, method: .POST, body: try HTTPBody(body), configuration: requestConfiguration)
+		return performRequest(for: url, method: .POST, body: try HTTPBody(body, encoder: encoder), configuration: requestConfiguration)
 			.map(\.data)
 			.decode(type: U.self, decoder: self)
 			.eraseToAnyPublisher()
@@ -59,7 +59,7 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	open func update<T: UniqueRemoteResource>(_ resource: T, router: Router? = nil) -> AnyPublisher<T, Error> {
 		let url = (router ?? self.router).url(for: resource, baseURL: baseUrl)
-		return performRequest(for: url, method: .PUT, body: try HTTPBody(resource), configuration: requestConfiguration)
+		return performRequest(for: url, method: .PUT, body: try HTTPBody(resource, encoder: encoder), configuration: requestConfiguration)
 			.map(\.data)
 			.decode(type: T.self, decoder: self)
 			.eraseToAnyPublisher()
