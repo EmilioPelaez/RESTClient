@@ -24,8 +24,7 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	open func all<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<[T], Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
-		let request = URLRequest(url: url)
-		return performRequest(request, requestConfiguration: requestConfiguration)
+		return performRequest(for: url, method: .GET, configuration: requestConfiguration)
 			.map(\.data)
 			.decode(type: [T].self, decoder: self)
 			.eraseToAnyPublisher()
@@ -33,8 +32,7 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	open func first<T: RemoteResource>(_ type: T.Type, pathPrefix: String? = nil) -> AnyPublisher<T?, Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix)
-		let request = URLRequest(url: url)
-		return performRequest(request, requestConfiguration: requestConfiguration)
+		return performRequest(for: url, method: .GET, configuration: requestConfiguration)
 			.map(\.data)
 			.decode(type: [T].self, decoder: self)
 			.map(\.first)
@@ -43,8 +41,7 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	open func find<T: UniqueRemoteResource>(_ type: T.Type, identifier: T.ID, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
 		let url = buildUrl(for: T.self, prefix: pathPrefix).appendingPathComponent(String(describing: identifier))
-		let request = URLRequest(url: url)
-		return performRequest(request, requestConfiguration: requestConfiguration)
+		return performRequest(for: url, method: .GET, configuration: requestConfiguration)
 			.map(\.data)
 			.decode(type: T.self, decoder: self)
 			.eraseToAnyPublisher()
@@ -52,32 +49,18 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	open func create<T: Encodable, U: RemoteResource>(_ body: T, receive: U.Type, pathPrefix: String? = nil) -> AnyPublisher<U, Error> {
 		let url = buildUrl(for: U.self, prefix: pathPrefix)
-		var request = URLRequest(url: url)
-		request.httpMethod = "POST"
-		do {
-			request.httpBody = try encoder.encode(body)
-			return performRequest(request, requestConfiguration: requestConfiguration)
-				.map(\.data)
-				.decode(type: U.self, decoder: self)
-				.eraseToAnyPublisher()
-		} catch {
-			return Fail(outputType: U.self, failure: error).eraseToAnyPublisher()
-		}
+		return performRequest(for: url, method: .POST, body: try HTTPBody(body), configuration: requestConfiguration)
+			.map(\.data)
+			.decode(type: U.self, decoder: self)
+			.eraseToAnyPublisher()
 	}
 	
 	open func update<T: UniqueRemoteResource>(_ resource: T, pathPrefix: String? = nil) -> AnyPublisher<T, Error> {
 		let url = buildIdentifierdUrl(for: resource, prefix: pathPrefix)
-		var request = URLRequest(url: url)
-		request.httpMethod = "PUT"
-		do {
-			request.httpBody = try encoder.encode(resource)
-			return performRequest(request, requestConfiguration: requestConfiguration)
-				.map(\.data)
-				.decode(type: T.self, decoder: self)
-				.eraseToAnyPublisher()
-		} catch {
-			return Fail(outputType: T.self, failure: error).eraseToAnyPublisher()
-		}
+		return performRequest(for: url, method: .PUT, body: try HTTPBody(resource), configuration: requestConfiguration)
+			.map(\.data)
+			.decode(type: T.self, decoder: self)
+			.eraseToAnyPublisher()
 	}
 	
 	open func delete<T: UniqueRemoteResource>(_ resource: T, pathPrefix: String? = nil) -> AnyPublisher<Void, Error> {
@@ -85,10 +68,8 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	}
 	
 	open func delete<T: RemoteResource>(_ type: T.Type, identifier: String, pathPrefix: String? = nil) -> AnyPublisher<(), Error> {
-		let url = buildUrl(for: type, prefix: pathPrefix)
-		var request = URLRequest(url: url)
-		request.httpMethod = "DELETE"
-		return performRequest(request, requestConfiguration: requestConfiguration)
+		let url = buildUrl(for: type, prefix: pathPrefix).appendingPathComponent(identifier)
+		return performRequest(for: url, method: .DELETE, configuration: requestConfiguration)
 			.map { _ in  }
 			.mapError { $0 as Error }
 			.eraseToAnyPublisher()

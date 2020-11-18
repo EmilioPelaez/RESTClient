@@ -30,9 +30,23 @@ open class HTTPClient {
 		}
 	}
 	
-	open func performRequest(_ request: URLRequest, requestConfiguration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
-		var request = request
-		requestConfiguration(&request)
+	open func performRequest(for url: URL, method: HTTPMethod = .GET, body: @autoclosure () throws -> HTTPBody? = nil, configuration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
+		var request = URLRequest(url: url)
+		request.httpMethod = method.description
+		do {
+			if let body = try body() {
+				request.httpBody = body.data
+				request.addValue(body.contentType.description, forHTTPHeaderField: "Content-Type")
+			}
+		} catch {
+			return Fail(outputType: (data: Data, response: URLResponse).self, failure: error)
+				.eraseToAnyPublisher()
+		}
+		configuration(&request)
+		return performRequest(request)
+	}
+	
+	open func performRequest(_ request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
 		return session.dataTaskPublisher(for: request)
 			.tryMap(validateResponse)
 			.map(transformResponse)
