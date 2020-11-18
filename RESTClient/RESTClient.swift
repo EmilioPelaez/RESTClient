@@ -12,12 +12,14 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 	
 	public let baseUrl: URL
 	public let router: Router
+	public let updateMethod: HTTPMethod
 	public let encoder: JSONEncoder
 	public let decoder: JSONDecoder
 	
-	public init(baseUrl: URL, router: Router = BasicRouter(), session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
+	public init(baseUrl: URL, router: Router = BasicRouter(), updateMethod: HTTPMethod = .PUT, session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
 		self.baseUrl = baseUrl
 		self.router = router
+		self.updateMethod = updateMethod
 		self.encoder = encoder
 		self.decoder = decoder
 		
@@ -57,11 +59,25 @@ open class RESTClient: HTTPClient, TopLevelDecoder {
 			.eraseToAnyPublisher()
 	}
 	
+	open func create<Body: Encodable>(_ body: Body, router: Router? = nil) -> AnyPublisher<Void, Error> {
+		let url = (router ?? self.router).url(for: type(of: body), baseURL: baseUrl)
+		return performRequest(for: url, method: .POST, body: try HTTPBody(body, encoder: encoder), configuration: requestConfiguration)
+			.map { _ in }
+			.eraseToAnyPublisher()
+	}
+	
 	open func update<Resource: UniqueRemoteResource>(_ resource: Resource, router: Router? = nil) -> AnyPublisher<Resource, Error> {
 		let url = (router ?? self.router).url(for: resource, baseURL: baseUrl)
-		return performRequest(for: url, method: .PUT, body: try HTTPBody(resource, encoder: encoder), configuration: requestConfiguration)
+		return performRequest(for: url, method: updateMethod, body: try HTTPBody(resource, encoder: encoder), configuration: requestConfiguration)
 			.map(\.data)
 			.decode(type: Resource.self, decoder: self)
+			.eraseToAnyPublisher()
+	}
+	
+	open func updateVoid<Resource: UniqueRemoteResource>(_ resource: Resource, router: Router? = nil) -> AnyPublisher<Void, Error> {
+		let url = (router ?? self.router).url(for: resource, baseURL: baseUrl)
+		return performRequest(for: url, method: updateMethod, body: try HTTPBody(resource, encoder: encoder), configuration: requestConfiguration)
+			.map { _ in }
 			.eraseToAnyPublisher()
 	}
 	
