@@ -15,7 +15,6 @@ open class HTTPClient {
 	}
 	public let session: URLSession
 	
-	open var requestConfiguration: (inout URLRequest) -> Void = { _ in }
 	open var validateResponse: (Data, URLResponse) throws -> (Data, URLResponse)
 	open var transformResponse: (Data, URLResponse) -> (Data, URLResponse) = { ($0, $1) }
 	

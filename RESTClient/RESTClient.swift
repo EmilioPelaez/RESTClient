@@ -10,11 +10,13 @@ import Combine
 
 open class RESTClient: HTTPClient, TopLevelDecoder {
 	
-	public let baseUrl: URL
-	public let router: Router
-	public let updateMethod: HTTPMethod
-	public let encoder: JSONEncoder
-	public let decoder: JSONDecoder
+	open var baseUrl: URL
+	open var router: Router
+	open var updateMethod: HTTPMethod
+	open var encoder: JSONEncoder
+	open var decoder: JSONDecoder
+	
+	open var requestConfiguration: (inout URLRequest) -> Void = { _ in }
 	
 	public init(baseUrl: URL, router: Router = BasicRouter(), updateMethod: HTTPMethod = .PUT, session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
 		self.baseUrl = baseUrl

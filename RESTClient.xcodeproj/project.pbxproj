@@ -91,13 +91,13 @@
 			children = (
 				C8F57FCE25485F77004BF8DF /* RESTClient.h */,
 				C8F57FCF25485F77004BF8DF /* Info.plist */,
-				C8F57FE925485FF0004BF8DF /* RESTClient.swift */,
+				C80AAAC2256525D400838C12 /* HTTPMethod.swift */,
+				C86AAE02255D3CE500563857 /* HTTPBody.swift */,
+				C86AADFE255D3C9C00563857 /* HTTPClient.swift */,
+				C80AAAC62565334700838C12 /* Router.swift */,
 				C8F57FED254862D2004BF8DF /* RemoteResource.swift */,
 				C8F57FF1254865ED004BF8DF /* UniqueRemoteResource.swift */,
-				C86AADFE255D3C9C00563857 /* HTTPClient.swift */,
-				C86AAE02255D3CE500563857 /* HTTPBody.swift */,
-				C80AAAC2256525D400838C12 /* HTTPMethod.swift */,
-				C80AAAC62565334700838C12 /* Router.swift */,
+				C8F57FE925485FF0004BF8DF /* RESTClient.swift */,
 			);
 			path = RESTClient;
 			sourceTree = "<group>";
