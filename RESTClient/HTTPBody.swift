@@ -45,7 +45,6 @@ extension HTTPBody {
 }
 
 extension HTTPBody.ContentType: CustomStringConvertible {
-	
 	public var description: String {
 		switch self {
 		case .textPlain: return "text/plain"
@@ -53,5 +52,8 @@ extension HTTPBody.ContentType: CustomStringConvertible {
 		case .custom(let string): return string
 		}
 	}
-	
 }
+
+extension HTTPBody.ContentType: Equatable {}
+
+extension HTTPBody: Equatable {}

@@ -28,3 +28,5 @@ extension HTTPMethod: CustomStringConvertible {
 		}
 	}
 }
+
+extension HTTPMethod: Equatable {}
