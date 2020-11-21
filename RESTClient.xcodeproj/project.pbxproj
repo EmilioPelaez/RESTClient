@@ -11,6 +11,7 @@
 		C80AAAC72565334700838C12 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = C80AAAC62565334700838C12 /* Router.swift */; };
 		C86AADFF255D3C9C00563857 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86AADFE255D3C9C00563857 /* HTTPClient.swift */; };
 		C86AAE03255D3CE500563857 /* HTTPBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = C86AAE02255D3CE500563857 /* HTTPBody.swift */; };
+		C8EB19EA2569765C004B9137 /* HTTPClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EB19E92569765C004B9137 /* HTTPClientTests.swift */; };
 		C8F57FD525485F77004BF8DF /* RESTClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8F57FCB25485F77004BF8DF /* RESTClient.framework */; };
 		C8F57FDA25485F77004BF8DF /* RESTClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8F57FD925485F77004BF8DF /* RESTClientTests.swift */; };
 		C8F57FDC25485F77004BF8DF /* RESTClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C8F57FCE25485F77004BF8DF /* RESTClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -36,6 +37,7 @@
 		C80AAAC62565334700838C12 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		C86AADFE255D3C9C00563857 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
 		C86AAE02255D3CE500563857 /* HTTPBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPBody.swift; sourceTree = "<group>"; };
+		C8EB19E92569765C004B9137 /* HTTPClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClientTests.swift; sourceTree = "<group>"; };
 		C8F57FCB25485F77004BF8DF /* RESTClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RESTClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8F57FCE25485F77004BF8DF /* RESTClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RESTClient.h; sourceTree = "<group>"; };
 		C8F57FCF25485F77004BF8DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				C8F580072549C8F6004BF8DF /* Object.swift */,
 				C8F5800B2549C906004BF8DF /* NewObject.swift */,
 				C8F57FD925485F77004BF8DF /* RESTClientTests.swift */,
+				C8EB19E92569765C004B9137 /* HTTPClientTests.swift */,
 				C8F57FDB25485F77004BF8DF /* Info.plist */,
 			);
 			path = RESTClientTests;
@@ -238,6 +241,7 @@
 			files = (
 				C8F580082549C8F6004BF8DF /* Object.swift in Sources */,
 				C8F57FDA25485F77004BF8DF /* RESTClientTests.swift in Sources */,
+				C8EB19EA2569765C004B9137 /* HTTPClientTests.swift in Sources */,
 				C8F5800C2549C906004BF8DF /* NewObject.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

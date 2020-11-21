@@ -10,7 +10,6 @@ import Foundation
 public protocol Router {
 	//	Used for creating URLs that don't specify an object identifier
 	func url<T>(for type: T.Type, baseURL: URL) -> URL
-	func url<T: RemoteResource>(for type: T.Type, baseURL: URL) -> URL
 	
 	//	Used for creating URLs that DO specify an object identifier
 	func url<T: UniqueRemoteResource>(for object: T, baseURL: URL) -> URL
@@ -20,11 +19,11 @@ public protocol Router {
 extension Router {
 	
 	public func url<T>(for type: T.Type, baseURL: URL) -> URL {
-		baseURL.appendingPathComponent(String(describing: type).lowercased() + "s")
-	}
-	
-	public func url<T: RemoteResource>(for type: T.Type, baseURL: URL) -> URL {
-		baseURL.appendingPathComponent(type.path)
+		if let type = type as? RemoteResource.Type {
+			return baseURL.appendingPathComponent(type.path)
+		} else {
+			return baseURL.appendingPathComponent(String(describing: type).lowercased() + "s")
+		}
 	}
 	
 	public func url<T: UniqueRemoteResource>(for object: T, baseURL: URL) -> URL {
