@@ -1,12 +1,5 @@
 import Vapor
 
-enum AppError: Error {
-	case encodeFailure
-	case missingBody
-	case missingId
-	case invalidId
-}
-
 func routes(_ app: Application) throws {
 	let values = (1...10)
 	
@@ -17,14 +10,14 @@ func routes(_ app: Application) throws {
 	func encodedString<T: Encodable>(_ object: T) throws -> String {
 		let data = try JSONEncoder().encode(object)
 		guard let string = String(data: data, encoding: .utf8) else {
-			throw AppError.encodeFailure
+			throw Abort(.internalServerError)
 		}
 		return string
 	}
 	
 	func decode<T: Decodable>(_ type: T.Type, from request: Request) throws -> T {
 		guard let buffer = request.body.data else {
-			throw AppError.missingBody
+			throw Abort(.badRequest)
 		}
 		return try JSONDecoder().decode(T.self, from: buffer)
 	}
@@ -35,14 +28,10 @@ func routes(_ app: Application) throws {
 	}
 	
 	app.get(["objects", ":id"]) { req -> String in
-		guard let idString = req.parameters.get("id") else {
-			throw AppError.missingId
-		}
-		guard let id = Int(idString) else {
-			throw AppError.invalidId
-		}
-		guard values.contains(id) else {
-			throw AppError.invalidId
+		guard let idString = req.parameters.get("id"),
+					let id = Int(idString),
+					values.contains(id) else {
+			throw Abort(.notFound)
 		}
 		let object = Object(id: id, value: "Hello")
 		return try encodedString(object)
@@ -55,28 +44,20 @@ func routes(_ app: Application) throws {
 	}
 	
 	app.put(["objects", ":id"]) { req -> String in
-		guard let idString = req.parameters.get("id") else {
-			throw AppError.missingId
-		}
-		guard let id = Int(idString) else {
-			throw AppError.invalidId
-		}
-		guard values.contains(id) else {
-			throw AppError.invalidId
+		guard let idString = req.parameters.get("id"),
+					let id = Int(idString),
+					values.contains(id) else {
+			throw Abort(.notFound)
 		}
 		let object = try decode(NewObject.self, from: req)
 		return try encodedString(object)
 	}
 	
 	app.delete(["objects", ":id"]) { req -> String in
-		guard let idString = req.parameters.get("id") else {
-			throw AppError.missingId
-		}
-		guard let id = Int(idString) else {
-			throw AppError.invalidId
-		}
-		guard values.contains(id) else {
-			throw AppError.invalidId
+		guard let idString = req.parameters.get("id"),
+					let id = Int(idString),
+					values.contains(id) else {
+			throw Abort(.notFound)
 		}
 		return ""
 	}
