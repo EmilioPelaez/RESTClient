@@ -13,6 +13,7 @@ open class HTTPClient {
 	public struct HTTPError: Error {
 		public let code: Int
 	}
+	
 	public let session: URLSession
 	
 	open var validateResponse: (Data, URLResponse) throws -> (Data, URLResponse)
@@ -51,4 +52,5 @@ open class HTTPClient {
 			.map(transformResponse)
 			.eraseToAnyPublisher()
 	}
+	
 }
