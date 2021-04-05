@@ -8,14 +8,14 @@
 import Foundation
 import Combine
 
-class PaginatedClient<Page: Decodable>: ResourceClient {
+open class PaginatedClient<Page: Decodable>: ResourceClient {
 	
-	enum PaginatedClientError: Error {
+	public enum PaginatedClientError: Error {
 		case invalidUrl
 	}
 	
-	let pageKey: String
-	let pageSizeKey: String
+	public let pageKey: String
+	public let pageSizeKey: String
 	
 	public init(baseUrl: URL, pageKey: String = "page", pageSizeKey: String = "pageSize", router: Router = BasicRouter(), updateMethod: HTTPMethod = .PUT, session: URLSession = .shared, encoder: JSONEncoder = .init(), decoder: JSONDecoder = .init()) {
 		self.pageKey = pageKey
@@ -23,7 +23,7 @@ class PaginatedClient<Page: Decodable>: ResourceClient {
 		super.init(baseUrl: baseUrl, router: router, updateMethod: updateMethod, session: session, encoder: encoder, decoder: decoder)
 	}
 	
-	func page<Resource: Decodable>(_ type: Resource.Type, router: Router? = nil, page: Int, pageSize: Int) -> AnyPublisher<PaginatedResponse<Page, [Resource]>, Error> {
+	open func page<Resource: Decodable>(_ type: Resource.Type, router: Router? = nil, page: Int, pageSize: Int) -> AnyPublisher<PaginatedResponse<Page, [Resource]>, Error> {
 		let url = (router ?? self.router).url(for: type, baseURL: baseUrl)
 		guard var components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
 			return Fail(error: PaginatedClientError.invalidUrl).eraseToAnyPublisher()
@@ -43,7 +43,7 @@ class PaginatedClient<Page: Decodable>: ResourceClient {
 	
 }
 
-struct PaginatedResponse<Page: Decodable, Results: Decodable>: Decodable {
-	let page: Page
-	let results: Results
+public struct PaginatedResponse<Page: Decodable, Results: Decodable>: Decodable {
+	public let page: Page
+	public let results: Results
 }
