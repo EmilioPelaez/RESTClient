@@ -11,7 +11,7 @@ import Combine
 
 class ResourceClientTests: XCTestCase {
 	
-	let values = (1...10)
+	let values = (1...8)
 	let client = ResourceClient(baseUrl: URL(string: "http://localhost:8080")!)
 	var bag: Set<AnyCancellable> = []
 	

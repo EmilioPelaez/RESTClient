@@ -1,7 +1,7 @@
 import Vapor
 
 func routes(_ app: Application) throws {
-	let values = (1...10)
+	let values = (1...8)
 	
 	app.get { req in
 		return "Server is up"
@@ -24,7 +24,14 @@ func routes(_ app: Application) throws {
 	
 	app.get("objects") { req -> String in
 		let objects = values.map { Object(id: $0, value: "Hello") }
-		return try encodedString(objects)
+		
+		if let pageRequest = try? req.query.decode(PageRequest.self) {
+			let filtered = Array(objects.dropFirst(pageRequest.start).prefix(pageRequest.pageSize))
+			let page = Page(page: pageRequest.page, size: filtered.count, total: objects.count)
+			return try encodedString(PagedResponse(page: page, results: filtered))
+		} else {
+			return try encodedString(objects)
+		}
 	}
 	
 	app.get(["objects", ":id"]) { req -> String in
