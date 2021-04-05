@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-open class RESTClient: HTTPClient, TopLevelDecoder {
+open class ResourceClient: HTTPClient, TopLevelDecoder {
 	
 	open var baseUrl: URL
 	open var router: Router

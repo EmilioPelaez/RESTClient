@@ -1,5 +1,5 @@
 //
-//  RESTClientTests.swift
+//  ResourceClientTests.swift
 //  RESTClientTests
 //
 //  Created by Emilio Peláez on 27/10/20.
@@ -9,10 +9,10 @@ import XCTest
 import Combine
 @testable import RESTClient
 
-class RESTClientTests: XCTestCase {
+class ResourceClientTests: XCTestCase {
 	
 	let values = (1...10)
-	let client = RESTClient(baseUrl: URL(string: "http://localhost:8080")!)
+	let client = ResourceClient(baseUrl: URL(string: "http://localhost:8080")!)
 	var bag: Set<AnyCancellable> = []
 	
 	func testAll() {
