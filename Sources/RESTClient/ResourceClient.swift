@@ -28,6 +28,64 @@ open class ResourceClient: HTTPClient, TopLevelDecoder {
 		super.init(session: session)
 	}
 	
+	//	MARK: - Async/Await Methods
+	@available(iOS 15.0, *)
+	open func all<Resource: Decodable>(_ type: Resource.Type, router: Router? = nil) async throws -> [Resource] {
+		let url = (router ?? self.router).url(for: type, baseURL: baseUrl)
+		let result = try await performRequest(for: url, method: .GET, configuration: requestConfiguration)
+		return try decode([Resource].self, from: result.0)
+	}
+	
+	@available(iOS 15.0, *)
+	open func first<Resource: Decodable>(_ type: Resource.Type, router: Router? = nil) async throws -> Resource? {
+		try await all(type, router: router).first
+	}
+	
+	@available(iOS 15.0, *)
+	open func find<Resource: UniqueRemoteResource>(_ type: Resource.Type, identifier: Resource.ID, router: Router? = nil) async throws -> Resource {
+		let url = (router ?? self.router).url(for: type, identifier: identifier, baseURL: baseUrl)
+		let result = try await performRequest(for: url, method: .GET, configuration: requestConfiguration)
+		return try decode(Resource.self, from: result.0)
+	}
+	
+	@available(iOS 15.0, *)
+	open func create<Body: Encodable, Resource: Decodable>(_ body: Body, receive: Resource.Type, router: Router? = nil) async throws -> Resource {
+		let url = (router ?? self.router).url(for: type(of: body), baseURL: baseUrl)
+		let result = try await performRequest(for: url, method: .POST, body: try HTTPBody(body, encoder: encoder), configuration: requestConfiguration)
+		return try decode(Resource.self, from: result.0)
+	}
+	
+	@available(iOS 15.0, *)
+	open func create<Body: Encodable>(_ body: Body, router: Router? = nil) async throws {
+		let url = (router ?? self.router).url(for: type(of: body), baseURL: baseUrl)
+		_ = try await performRequest(for: url, method: .POST, body: try HTTPBody(body, encoder: encoder), configuration: requestConfiguration)
+	}
+	
+	@available(iOS 15.0, *)
+	open func update<Resource: UniqueRemoteResource>(_ resource: Resource, router: Router? = nil) async throws -> Resource {
+		let url = (router ?? self.router).url(for: resource, baseURL: baseUrl)
+		let result = try await performRequest(for: url, method: updateMethod, body: try HTTPBody(resource, encoder: encoder), configuration: requestConfiguration)
+		return try decode(Resource.self, from: result.0)
+	}
+	
+	@available(iOS 15.0, *)
+	open func update<Resource: UniqueRemoteResource>(_ resource: Resource, router: Router? = nil) async throws {
+		let url = (router ?? self.router).url(for: resource, baseURL: baseUrl)
+		_ = try await performRequest(for: url, method: updateMethod, body: try HTTPBody(resource, encoder: encoder), configuration: requestConfiguration)
+	}
+	
+	@available(iOS 15.0, *)
+	open func delete<Resource: UniqueRemoteResource>(_ resource: Resource, router: Router? = nil) async throws {
+		try await delete(type(of: resource), identifier: resource.id, router: router)
+	}
+	
+	@available(iOS 15.0, *)
+	open func delete<Resource: UniqueRemoteResource>(_ type: Resource.Type, identifier: Resource.ID, router: Router? = nil) async throws {
+		let url = (router ?? self.router).url(for: type, identifier: identifier, baseURL: baseUrl)
+		_ = try await performRequest(for: url, method: .DELETE, configuration: requestConfiguration)
+	}
+	
+	//	MARK: - Combine Methods
 	open func all<Resource: Decodable>(_ type: Resource.Type, router: Router? = nil) -> AnyPublisher<[Resource], Error> {
 		let url = (router ?? self.router).url(for: type, baseURL: baseUrl)
 		return performRequest(for: url, method: .GET, configuration: requestConfiguration)
@@ -37,10 +95,7 @@ open class ResourceClient: HTTPClient, TopLevelDecoder {
 	}
 	
 	open func first<Resource: Decodable>(_ type: Resource.Type, router: Router? = nil) -> AnyPublisher<Resource?, Error> {
-		let url = (router ?? self.router).url(for: type, baseURL: baseUrl)
-		return performRequest(for: url, method: .GET, configuration: requestConfiguration)
-			.map(\.data)
-			.decode(type: [Resource].self, decoder: self)
+		all(type, router: router)
 			.map(\.first)
 			.eraseToAnyPublisher()
 	}
