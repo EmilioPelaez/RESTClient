@@ -30,20 +30,31 @@ open class HTTPClient {
 		}
 	}
 	
-	open func performRequest(for url: URL, method: HTTPMethod = .GET, body: @autoclosure () throws -> HTTPBody? = nil, configuration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
+	open func buildRequest(for url: URL, method: HTTPMethod = .GET, body: HTTPBody?, configuration: (inout URLRequest) -> Void) -> URLRequest {
 		var request = URLRequest(url: url)
 		request.httpMethod = method.description
+		if let body = body {
+			request.httpBody = body.data
+			request.addValue(body.contentType.description, forHTTPHeaderField: "Content-Type")
+		}
+		configuration(&request)
+		return request
+	}
+	
+	open func performRequest(for url: URL, method: HTTPMethod = .GET, body: @autoclosure () throws -> HTTPBody? = nil, configuration: (inout URLRequest) -> Void = { _ in }) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
 		do {
-			if let body = try body() {
-				request.httpBody = body.data
-				request.addValue(body.contentType.description, forHTTPHeaderField: "Content-Type")
-			}
+			let request = buildRequest(for: url, method: method, body: try body(), configuration: configuration)
+			return performRequest(request)
 		} catch {
 			return Fail(outputType: (data: Data, response: URLResponse).self, failure: error)
 				.eraseToAnyPublisher()
 		}
-		configuration(&request)
-		return performRequest(request)
+	}
+	
+	@available(iOS 15.0, *)
+	open func performRequest(for url: URL, method: HTTPMethod = .GET, body: @autoclosure () throws -> HTTPBody? = nil, configuration: (inout URLRequest) -> Void = { _ in }) async throws -> (Data, URLResponse) {
+		let request = buildRequest(for: url, method: method, body: try body(), configuration: configuration)
+		return try await performRequest(request)
 	}
 	
 	open func performRequest(_ request: URLRequest) -> AnyPublisher<(data: Data, response: URLResponse), Error> {
@@ -51,6 +62,13 @@ open class HTTPClient {
 			.tryMap(validateResponse)
 			.map(transformResponse)
 			.eraseToAnyPublisher()
+	}
+	
+	@available(iOS 15.0, *)
+	open func performRequest(_ request: URLRequest) async throws -> (Data, URLResponse) {
+		let (data, response) = try await session.data(for: request)
+		let validated = try validateResponse(data, response)
+		return transformResponse(validated.0, validated.1)
 	}
 	
 }
